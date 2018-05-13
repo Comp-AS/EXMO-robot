@@ -1,0 +1,24 @@
+@import "main.styl"
+
+.active_orders
+	border 1px solid borders-color
+	background white
+	display inline-block
+	position relative
+
+	&.hidden
+		display none
+
+	&__item
+		padding 7px 15px
+
+		&--pair
+			font-weight bold
+
+	&__title
+		titleEl()
+
+	&__list
+		list-style none
+		padding 0 15px
+		border-left 6px solid rgba(255, 178, 0, 0.74)

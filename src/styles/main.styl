@@ -1,0 +1,29 @@
+@import "variables.styl"
+
+body
+	font-family "Arial", sans-serif
+
+.wrapper
+	margin (20px + header-height) auto
+	max-width wrapper-width
+	border 1px solid borders-color
+	padding 20px 35px
+	background-color rgba(216, 216, 216, 0.18)
+
+.hidden
+	display none !important
+
+.rowContainer
+	display flex
+	position relative
+	margin: 20px auto
+
+titleEl()
+	position relative
+	top 0
+	font-style italic
+	font-size 13px
+	padding 5px 12px
+	margin 0
+	background rgba(50, 50, 50, 0.04)
+	color rgba(50, 50, 50, 0.7)

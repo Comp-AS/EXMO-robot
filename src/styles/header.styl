@@ -1,0 +1,31 @@
+@import "variables.styl"
+.header
+	position absolute
+	top 0
+	left 0
+	width 100%
+	max-height header-height
+	padding 12px 0
+	display table-cell
+	border-bottom 1px solid rgba(0, 24, 87, 0.5)
+
+	&__wrapper
+		width wrapper-width
+		margin 0 auto
+		vertical-align middle
+		display flex
+		justify-content space-evenly
+
+	& .balance,
+	& .reserved
+		display inline-block
+
+		&__title
+			text-align center
+
+		&__list
+			display inline
+
+			&--item
+				font-size 10px
+				display inline-block

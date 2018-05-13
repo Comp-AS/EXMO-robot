@@ -1,0 +1,32 @@
+@import "main.styl"
+
+.best_offers
+	border 1px solid borders-color
+	&.hidden
+		display none
+
+	&__title
+		titleEl()
+
+	&__item
+		display inline-block
+		width 180px
+		margin-right 10px
+		border 1px solid borders-color
+		border-bottom none
+		padding 10px 15px
+		font-weight normal
+		line-height normal
+		background white
+
+		&--pair
+			font-size 18px
+			text-align center
+			color #434600
+
+		&--value
+			font-size 12px
+
+	&__list
+		display flex
+		justify-content space-evenly

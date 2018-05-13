@@ -1,0 +1,27 @@
+{
+  "name": "exmorobot",
+  "version": "1.0.0",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "browser-sync": "^2.23.7",
+    "crypto-js": "^3.1.9-1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "jquery": "^3.3.1"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.0",
+    "del": "^3.0.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-stylus": "^2.7.0",
+    "jquery": "^3.3.1",
+    "run-sequence": "^2.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "SunFoxx",
+  "license": "ISC",
+  "description": "no"
+}

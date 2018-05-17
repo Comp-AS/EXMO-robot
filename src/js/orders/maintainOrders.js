@@ -56,7 +56,7 @@ const maintainOrders = function () {
                                 let isFoundPlaceInCup = false;
                                 for (let indx in arr) {
                                     const cup = arr[indx];
-                                    let priceRatio = (Number.parseFloat(cup[0]) + increment) * (commiss - ((commiss - 1) * 2)) / prevPrice;
+                                    let priceRatio = (Number.parseFloat(cup[0]) + increment) / (prevPrice * commiss);
                                     //создаем сделку выше элемента в стакане, если выгода от продажи превысит take profit
                                     if (priceRatio >= TP) {
                                         let newPrice = Number.parseFloat(cup[0]) + increment;
@@ -67,7 +67,7 @@ const maintainOrders = function () {
                                 }
                             });
                         } else {
-                            createOrder(entry.pair, entry.quantity, entry.price, operation, (createResult) => console.log(`creating new ${operation} order for ${entry.quantity} ${entry.pair} (u have ${userInfo.balances[currency]}) price - ${entry.price}, log: ${JSON.stringify(createResult)}`));
+                            createOrder(entry.pair, entry.quantity, entry.price, operation, (createResult) => console.log(`creating new ${operation} order for ${entry.quantity} ${entry.pair} price - ${entry.price}`));
                         }
                     }
                     //покупка
@@ -102,12 +102,14 @@ const maintainOrders = function () {
                                         } else {
                                             createOrder(pair, value, filteredTicker[index].sell_price, 'sell', (createResult) => console.log(`creating new sell order for ${value} ${pair} price - ${filteredTicker[index].sell_price}`));
                                         }
+                                        break;
                                     }
                                 }
                                 if (operation === 'buy') {
                                     const amount = value / Number.parseFloat(filteredTicker[index].buy_price);
                                     if (amount <= max_quantity && amount >= min_quantity) {
                                         createOrder(pair, amount, filteredTicker[index].buy_price, 'buy', (createResult) => console.log(`creating new buy order for ${amount} ${pair} price - ${filteredTicker[index].buy_price}, ${JSON.stringify(createResult)}`));
+                                        break;
                                     }
                                 }
                             }
@@ -215,22 +217,24 @@ function maintainSellOrder(order) {
             let isFoundPlaceInCup = false;
             for (let indx in arr) {
                 const cup = arr[indx];
-                let priceRatio = (Number.parseFloat(cup[0]) + increment) * (commiss - ((commiss - 1) * 2)) / prevPrice;
+                let priceRatio = (Number.parseFloat(cup[0]) + increment) / (prevPrice * commiss);
                 let isOurCup = Number.parseFloat(cup[0]) === Number.parseFloat(order.price);
-                //создаем сделку выше элемента в стакане, если этот элемент не наш и выгода от продажи превысит 2%
+                //создаем сделку выше элемента в стакане, если этот элемент не наш и выгода от продажи превысит take profit
                 if (priceRatio >= TP && !isOurCup) {
                     //если профита тут достаточно и конкурирующий ордер не наш, тогда пересоздаем ордер на этом месте
                     let newPrice = Number.parseFloat(cup[0]) + increment;
-                    recreateOrder(order.order_id, order.pair, totalQuantity, newPrice, 'sell',
-                        `Ордер ${JSON.stringify(order)} отменен: найдена более выгодная позиция`,
-                        `creating new sell order for ${totalQuantity} ${order.pair}  price - ${newPrice}`);
-                    isFoundPlaceInCup = true;
-                    break;
+                    if (newPrice !== Number.parseFloat(order.price)) {
+                        recreateOrder(order.order_id, order.pair, totalQuantity, newPrice, 'sell',
+                            `Ордер ${JSON.stringify(order)} отменен: найдена более выгодная позиция`,
+                            `creating new sell order for ${totalQuantity} ${order.pair}  price - ${newPrice}`);
+                        isFoundPlaceInCup = true;
+                        break;
+                    }
                 }
             }
             if (!isFoundPlaceInCup) {
-                //проверка на stop loss 7%
-                if (arr[0][0] !== order.price && Number.parseFloat(arr[0][0]) * commiss / Number.parseFloat(order.price) <= SL) {
+                //проверка на stop loss
+                if (arr[0][0] !== order.price && Number.parseFloat(arr[0][0]) / (prevPrice * commiss) <= SL) {
                     recreateOrder(order.order_id, order.pair, totalQuantity, Number.parseFloat(arr[0][0]) + increment, 'sell',
                         `Ордер ${JSON.stringify(order)} отменен: сработал StopLoss`,
                         `creating new sell order for ${totalQuantity} ${order.pair}  price - ${Number.parseFloat(arr[0][0]) + increment}`);

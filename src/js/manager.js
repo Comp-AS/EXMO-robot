@@ -29,7 +29,7 @@ const refreshPage = function () {
                     refresh();
                 });
             }
-        }, 12 * 1000);
+        }, 15 * 1000);
     }
     refresh();
 };
